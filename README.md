@@ -19,7 +19,7 @@ To streamline the deployment process, I broke down the installation of monitorin
 
 For seamless integration, I automated the population of the Playbook inventory file using __AWS CLI__, distributing the instances into two hosts. 
 
-To enhance security, I ensured that the metrics collected by Node Exporter were protected using __TLS__ certificates and __basic authentication__. This ensured the confidentiality and integrity of the data transmitted. 🔒🔐
+To enhance security, I ensured that the metrics collected by Node Exporter were protected using __TLS__ certificates and __basic authentication__. This ensured the confidentiality and integrity of the data transmitted.
 
-Moreover, to safeguard sensitive information, I employed __Ansible Vault__ to encrypt the __IAM Programmatic Access keys and secrets__. This fortified the system against unauthorized access and protected the credentials. 🔐🔐
+Moreover, to safeguard sensitive information, I employed __Ansible Vault__ to encrypt the __IAM Programmatic Access keys and secrets__. This fortified the system against unauthorized access and protected the credentials.
 
