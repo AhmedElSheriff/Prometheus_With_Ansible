@@ -1,15 +1,25 @@
 # Working with Ansible Roles
-In this lab, I ran a docker container and added its IP Address to the inventory file.
-I then created a configuration file including some config such as the remote user, the private key name and path, and the inventory file name and path.
-Then I created my __web__ role folder structure
-* HTML, CSS, and JavaScript files
-* Variables file
-* Jinja2 Template file
-* Tasks file
-* Handlers file
+where I leveraged Infrastructure as Code (IAC) using Terraform, Ansible Roles, and Bash Scripting to provision a streamlined AWS Infrastructure. The project entailed deploying Prometheus with Alert Manager and EC2 Service Discovery, alongside the installation of a Grafana dashboard
 
-I have also attached the public and private keys that can be used to connect to the remote hosts in the inventory file
+## The AWS Infrastructure components included:
+* VPC
+* Public Subnet
+* Internet Gateway
+* Route Table
+* Two EC2 Instances with Ubuntu AMI
+* Security Group to enable Prometheus, Node Exporter, Alert Manager, and Grafana
 
-The private key is encrypted using __Ansible Vault__
+To streamline the deployment process, I broke down the installation of monitoring resources into distinct Ansible Roles
 
-And finally, the playbook.yml file is used to call the web role which executes all the tasks and handlers in the project
+## Ansible Rules:
+* Prometheus
+* Alert Manager
+* Node Exporter
+* Grafana
+
+For seamless integration, I automated the population of the Playbook inventory file using __AWS CLI__, distributing the instances into two hosts. 
+
+To enhance security, I ensured that the metrics collected by Node Exporter were protected using __TLS__ certificates and __basic authentication__. This ensured the confidentiality and integrity of the data transmitted. 🔒🔐
+
+Moreover, to safeguard sensitive information, I employed __Ansible Vault__ to encrypt the __IAM Programmatic Access keys and secrets__. This fortified the system against unauthorized access and protected the credentials. 🔐🔐
+
