@@ -1,0 +1,59 @@
+- name: Add User
+  ansible.builtin.user:
+    name: node_exporter
+    shell: /bin/false
+    create_home: false
+
+- name: Download Exporter
+  ansible.builtin.get_url:
+    url: https://github.com/prometheus/node_exporter/releases/download/v1.6.0/node_exporter-1.6.0.linux-amd64.tar.gz
+    dest: /tmp
+
+- name: Unarchive Exporter
+  ansible.builtin.unarchive:
+    src: /tmp/node_exporter-1.6.0.linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Copy Exporter Binaries
+  ansible.builtin.copy:
+    src: /tmp/node_exporter-1.6.0.linux-amd64/node_exporter
+    dest: /usr/local/bin
+    owner: node_exporter
+    group: node_exporter
+    mode: '0755'
+    remote_src: yes
+
+- name: Create Node Exporter Configuration Directory
+  ansible.builtin.file:
+    path: /etc/node_exporter
+    state: directory
+    owner: node_exporter
+    group: node_exporter
+
+- name: Copy Node Exporter Configuration
+  ansible.builtin.copy:
+    src: config.yml
+    dest: /etc/node_exporter
+    owner: node_exporter
+    group: node_exporter
+
+- name: Copy Node Exporter TLS Key
+  ansible.builtin.copy:
+    src: node_exporter.key
+    dest: /etc/node_exporter
+    owner: node_exporter
+    group: node_exporter
+
+- name: Copy Node Exporter TLS Crt
+  ansible.builtin.copy:
+    src: node_exporter.crt
+    dest: /etc/node_exporter
+    owner: node_exporter
+    group: node_exporter
+
+- name: Copy Service File
+  ansible.builtin.copy:
+    src: node_exporter.service
+    dest: /etc/systemd/system/
+  notify: Start Node Exporter Service

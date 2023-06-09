@@ -1,0 +1,12 @@
+- name: Prometheus Playbook
+  hosts: prometheus
+  roles:
+    - node_exporter
+    - alert_manager
+    - prometheus
+    - grafana
+
+- name: Node Exporter Playbook
+  hosts: node_exporter
+  roles:
+    - node_exporter

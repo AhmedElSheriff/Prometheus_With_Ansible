@@ -1,0 +1,6 @@
+vault-pass
+.vscode
+key.pem
+.terraform*
+key
+key.pub

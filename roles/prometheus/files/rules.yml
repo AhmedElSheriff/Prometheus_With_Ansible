@@ -1,0 +1,14 @@
+groups:
+  - name: MonitorInstances
+    rules:
+      - record: job:up
+        expr: up{}
+
+      - alert: DownInstance
+        expr: job:up == 0
+        for: 10s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Instance {{ $labels.instance }} is down"
+          description: "The instance {{ $labels.instance }} is not responding to the monitoring probes."

@@ -1,0 +1,54 @@
+- name: Add User
+  ansible.builtin.user:
+    name: alert_manager
+    shell: /bin/false
+    create_home: false
+
+- name: Download Alert Manager
+  ansible.builtin.get_url:
+    url: https://github.com/prometheus/alertmanager/releases/download/v0.25.0/alertmanager-0.25.0.linux-amd64.tar.gz
+    dest: /tmp
+
+- name: Unarchive Alert Manager
+  ansible.builtin.unarchive:
+    src: /tmp/alertmanager-0.25.0.linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Copy Alert Manager Binaries
+  ansible.builtin.copy:
+    src: /tmp/alertmanager-0.25.0.linux-amd64/alertmanager
+    dest: /usr/local/bin
+    owner: alert_manager
+    group: alert_manager
+    mode: '0755'
+    remote_src: yes
+
+- name: Copy Alert Manager Tool Binaries
+  ansible.builtin.copy:
+    src: /tmp/alertmanager-0.25.0.linux-amd64/amtool
+    dest: /usr/local/bin
+    owner: alert_manager
+    group: alert_manager
+    mode: '0755'
+    remote_src: yes
+
+- name: Create Alert Manager Configuration Directory
+  ansible.builtin.file:
+    path: /etc/alertmanager
+    state: directory
+    owner: alert_manager
+    group: alert_manager
+
+- name: Move Alert Manager Configurations
+  ansible.builtin.copy:
+    src: alertmanager.yml
+    dest: /etc/alertmanager/
+    owner: alert_manager
+    group: alert_manager
+
+- name: Copy Alert Manager Service File
+  ansible.builtin.copy:
+    src: alertmanager.service
+    dest: /etc/systemd/system/
+  notify: Start Alert Manager Service
